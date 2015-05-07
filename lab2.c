@@ -10,6 +10,7 @@
 #define ENTRY_POINT_DIR_NAME_SIZE 200
 #define MAX_FILENAME_SIZE 1000
 #define MAX_FILE_INODES 1000
+#define FILES_PERIOD_TO_PRINTF 10000
 
 #define allocate(type, size) (type*)malloc(sizeof(type) * size)
 #define fill_array(arr, size, default_value) for (int i = 0; i < size; ++i) {arr[i] = default_value;}
@@ -28,6 +29,8 @@ struct inodes_collection
   int size;
   file_inode** file_inodes;
 } inodes;
+
+int total_files_processed = 0;
 
 
 void read_fs_item(char* item_name);
@@ -74,6 +77,7 @@ int main(int argc, char** argv)
   //   read_entity(argv[i]);
   // }
 
+  printf("before final pring\n");
   print_inodes();
 
   return 0;
@@ -98,6 +102,8 @@ void read_fs_item(char* item_name)
         strcat(subitem_name, dir->d_name);
 
        read_fs_item(subitem_name);
+
+       free(subitem_name);
       }
     }
 
@@ -106,6 +112,13 @@ void read_fs_item(char* item_name)
   else
   {
     check_file(item_name);
+
+    total_files_processed++;
+    if (total_files_processed % FILES_PERIOD_TO_PRINTF == 0)
+    {
+      printf("Files processed: %d\n", total_files_processed);
+      printf("Last processed file: %s\n", item_name);
+    }
   }
 }
 
@@ -180,6 +193,7 @@ void print_inodes()
     {
       printf("%s\n", cur_inode->filenames[j]);
     }
+    printf("\n\n");
   }
 }
 
