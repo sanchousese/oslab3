@@ -48,13 +48,8 @@ bool read_and_store_sizes(string dir) {
 int main(int argc, char *argv[]) {
     for (int j = 1; j < argc; ++j) {
         string dir = string(argv[j]);
-        vector<string> files = vector<string>();
 
         read_and_store_sizes(dir);
-
-        for (unsigned int i = 0; i < files.size(); i++) {
-            cout << files[i] << endl;
-        }
 
         for (int k = 0; k < sizes.size(); ++k) {
             cout << sizes[k] << endl;
