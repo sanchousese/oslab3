@@ -51,7 +51,6 @@ bool read_and_store_sizes(string dir) {
 int main(int argc, char *argv[]) {
     for (int j = 1; j < argc - 1; ++j) {
         string dir = string(argv[j]);
-        vector<string> files = vector<string>();
 
         read_and_store_sizes(dir);
 
