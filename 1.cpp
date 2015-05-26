@@ -5,6 +5,9 @@
 #include <iostream>
 #include <sys/stat.h>
 #include <string.h>
+#include <cstdlib>
+#include <algorithm>
+#include <cmath>
 
 using namespace std;
 
@@ -46,7 +49,7 @@ bool read_and_store_sizes(string dir) {
 }
 
 int main(int argc, char *argv[]) {
-    for (int j = 1; j < argc; ++j) {
+    for (int j = 1; j < argc - 1; ++j) {
         string dir = string(argv[j]);
         vector<string> files = vector<string>();
 
@@ -56,8 +59,40 @@ int main(int argc, char *argv[]) {
             cout << files[i] << endl;
         }
 
-        for (int k = 0; k < sizes.size(); ++k) {
-            cout << sizes[k] << endl;
+        // for (int k = 0; k < sizes.size(); ++k) {
+        //     cout << sizes[k] << endl;
+        // }
+    }
+
+    int h = atoi(argv[argc-1]);
+    int max = *max_element(sizes.begin(), sizes.end());
+
+    int stepsPerStar = (int) ceil((double)max / (double)h);
+
+    cout << "Hist:" << endl;
+
+    vector<int> hist = vector<int>();
+
+    for(int i = 0; i < stepsPerStar; ++i)
+    {
+        hist.push_back(0);
+    }
+
+    for (int k = 0; k < sizes.size(); ++k) {
+        hist[(int)ceil((double)sizes[k] / (double)h)]++;
+    }
+
+    for(int i = 0; i < hist.size(); ++i)
+    {
+        if(hist[i] > 0)
+        {
+            cout << "[" << (i)*h << "]-[" << (i+1)*h << "]" << endl;
+            for(int j = 0; j < hist[i]; ++j)
+            {
+                cout << "*";
+            }
+
+            cout << endl;
         }
     }
 
